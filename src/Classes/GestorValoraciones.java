@@ -1,7 +1,5 @@
 package src.Classes;
 
-import java.util.ArrayList;
-
 import java.util.LinkedHashSet;
 
 public class GestorValoraciones {
@@ -12,7 +10,9 @@ public class GestorValoraciones {
     }
 
     public static void showValoraciones(){
-        System.out.println(valoraciones);
+        for (Valoracion v : valoraciones){
+            System.out.println(v);
+        }
     }
 
 }

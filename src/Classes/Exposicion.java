@@ -7,9 +7,9 @@ import java.util.Objects;
 
 
 public class Exposicion {
-    String titulo,descripcion;
-    TipoExposicion tipo;
-    LocalDateTime fechaCreacion;
+    private String titulo,descripcion;
+    private TipoExposicion tipo;
+    private LocalDateTime fechaCreacion;
 
     public Exposicion(String titulo, String descripcion, TipoExposicion tipo){
         this.titulo = titulo;
@@ -35,9 +35,9 @@ public class Exposicion {
     @Override
     public String toString() {
         return "titulo='" + titulo + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", tipo=" + tipo +
-                ", fechaCreacion=" + fechaCreacion;
+                ", descripcion:'" + descripcion + '\'' +
+                ", tipo:" + tipo +
+                ", fechaCreacion:" + fechaCreacion;
     }
 
     @Override

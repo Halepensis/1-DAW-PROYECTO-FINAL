@@ -3,15 +3,17 @@ package src.Classes;
 import java.util.Objects;
 
 public class Valoracion {
-    Visitante visitante;
-    Exposicion exposicion;
-    int maxPuntuacion=5;
-    int minPuntuacion=0;
-    int puntuacion;
+    private Visitante visitante;
+    private Exposicion exposicion;
+    private String comentario;
+    private int maxPuntuacion=5;
+    private int minPuntuacion=0;
+    private int puntuacion;
 
-    public Valoracion(Visitante visitante, Exposicion exposicion, int puntuacion){
+    public Valoracion(Visitante visitante, Exposicion exposicion,String comentario, int puntuacion){
         this.visitante = visitante;
         this.exposicion = exposicion;
+        this.comentario = comentario;
         this.puntuacion = rangePuntuacion(puntuacion);
 
     }
@@ -30,9 +32,10 @@ public class Valoracion {
 
     @Override
     public String toString() {
-        return "visitante= " + visitante.getNombre()+
-                ", exposicion= " + exposicion.getTitulo()+
-                ", puntuacion= " + puntuacion;
+        return "visitante: " + visitante.getNombre()+
+                ", exposicion: " + exposicion.getTitulo()+
+                ", puntuacion: " + puntuacion +
+                ", comentario: "+comentario;
     }
 
     @Override
