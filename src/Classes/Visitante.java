@@ -1,3 +1,5 @@
+package src.Classes;
+
 public class Visitante {
     String nombre,email;
     int edad;
