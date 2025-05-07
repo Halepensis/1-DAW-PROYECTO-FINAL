@@ -1,4 +1,6 @@
-package src.Classes;
+package src.FileManager;
+
+import src.Classes.Valoracion;
 
 import java.util.LinkedHashSet;
 
@@ -7,6 +9,7 @@ public class GestorValoraciones {
 
     public static void addValoracion(Valoracion valoracion){
         valoraciones.add(valoracion);
+        LogsTexto.writeLogs(valoracion);
     }
 
     public static void showValoraciones(){

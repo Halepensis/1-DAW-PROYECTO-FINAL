@@ -1,5 +1,7 @@
 package src.Classes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Valoracion {
@@ -9,14 +11,35 @@ public class Valoracion {
     private int maxPuntuacion=5;
     private int minPuntuacion=0;
     private int puntuacion;
+    private LocalDateTime fechaValoracion;
 
     public Valoracion(Visitante visitante, Exposicion exposicion,String comentario, int puntuacion){
         this.visitante = visitante;
         this.exposicion = exposicion;
         this.comentario = comentario;
         this.puntuacion = rangePuntuacion(puntuacion);
+        fechaValoracion = LocalDateTime.now();
+
 
     }
+    //Getters
+    public Visitante getVisitante() {
+        return visitante;
+    }
+    public Exposicion getExposicion() {
+        return exposicion;
+    }
+    public String getComentario() {
+        return comentario;
+    }
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+    public String getFechaValoracion() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+        return fechaValoracion.format(formatter);
+    }
+
 
      private int rangePuntuacion(int puntuacion) {
         if (puntuacion >=maxPuntuacion){
@@ -29,6 +52,7 @@ public class Valoracion {
 
 
      }
+
 
     @Override
     public String toString() {
