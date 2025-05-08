@@ -5,7 +5,7 @@ import src.Classes.Visitante;
 import java.sql.*;
 
 public class VisitantesDAO extends MuseoConnection implements BdInterface<Visitante> {
-
+    @Override
     public void create(Visitante visitante) {
         String sql = "INSERT INTO Visitantes (nombre,edad,email)" +
                 "VALUES (?,?,?)";
@@ -23,7 +23,7 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
         }
 
     }
-
+    @Override
     public Visitante get(String email) {
         Visitante visitante = null;
         String sql = "Select * FROM Visitantes where email=?";
@@ -45,7 +45,7 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
         return visitante;
     }
 
-
+    @Override
     public void readAll() {
         String sql = "Select * FROM Visitantes";
         try {
@@ -65,11 +65,11 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
         }
 
     }
-
+    @Override
     public void update(Visitante visitante) {
 
     }
-
+    @Override
     public void delete(Visitante visitante) {
         String sql = "Delete  FROM Visitantes where email=?";
         try {
