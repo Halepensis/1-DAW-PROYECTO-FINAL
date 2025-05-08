@@ -20,8 +20,11 @@ public class Main {
         GestorValoraciones.addValoracion(valoracion2);
         GestorValoraciones.addValoracion(valoracion3);
         ExposicionesBinario binario = new ExposicionesBinario();
-        VisitantesDAO.addVisitante(visitante);
-        VisitantesDAO.leerVisitantes();
+        VisitantesDAO dao = new VisitantesDAO();
+        dao.create(visitante);
+        System.out.println(dao.get(visitante.getEmail()));
+
+
 
 
 
