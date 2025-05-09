@@ -15,14 +15,10 @@ public class Main {
         Valoracion valoracion = new Valoracion(visitante,ejemplo,"no esta mal",4);
         Valoracion valoracion3 = new Valoracion(visitante,ejemplo2,"esta bien",4);
         Valoracion valoracion2 = new Valoracion(visitante2,ejemplo,"meh",4);
-        GestorValoraciones.addValoracion(valoracion);
-        GestorValoraciones.addValoracion(valoracion);
-        GestorValoraciones.addValoracion(valoracion2);
-        GestorValoraciones.addValoracion(valoracion3);
         ExposicionesBinario binario = new ExposicionesBinario();
         VisitantesDAO dao = new VisitantesDAO();
         dao.create(visitante);
-        System.out.println(dao.get(visitante.getEmail()));
+
 
 
 
