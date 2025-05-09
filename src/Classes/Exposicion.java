@@ -1,35 +1,65 @@
 package src.Classes;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 
 public class Exposicion {
-    private String titulo,descripcion;
+    private int id;
+    private String titulo, descripcion;
     private TipoExposicion tipo;
     private LocalDateTime fechaCreacion;
 
-    public Exposicion(String titulo, String descripcion, TipoExposicion tipo){
+
+    public Exposicion(String titulo, String descripcion, TipoExposicion tipo) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.tipo = tipo;
-        fechaCreacion = LocalDateTime.now();
+        fechaCreacion = LocalDateTime.now().withNano(0);
+    }
+
+    //Constructor cuando recuperamos la exposicion de la base de datos
+    public Exposicion(int id, String titulo, String descripcion, TipoExposicion tipo, LocalDateTime fechaCreacion) {
+        this.id = id;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.tipo = tipo;
+        this.fechaCreacion = fechaCreacion;
     }
     //Getters
+
+    public int getId() {
+        return id;
+    }
+
     public String getTitulo() {
         return titulo;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
+
     public TipoExposicion getTipo() {
         return tipo;
     }
-    public String getFechaCreacion() {
+
+    public Timestamp getFechaCreacion() {
+        return Timestamp.valueOf(fechaCreacion);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+
+    public String getFechaCreacionFormated() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        return fechaCreacion.format(formatter);
+        return formatter.format(fechaCreacion);
+
     }
 
     @Override
