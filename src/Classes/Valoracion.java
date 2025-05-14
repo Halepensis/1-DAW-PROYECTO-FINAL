@@ -1,10 +1,14 @@
 package src.Classes;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 
 public class Valoracion {
+    private int id;
     private Visitante visitante;
     private Exposicion exposicion;
     private String comentario;
@@ -18,8 +22,15 @@ public class Valoracion {
         this.exposicion = exposicion;
         this.comentario = comentario;
         this.puntuacion = rangePuntuacion(puntuacion);
-        fechaValoracion = LocalDateTime.now();
+        fechaValoracion = LocalDateTime.now().withNano(0);
 
+    }
+    public Valoracion(int id,Visitante visitante, Exposicion exposicion,String comentario, int puntuacion){
+        this.visitante = visitante;
+        this.exposicion = exposicion;
+        this.comentario = comentario;
+        this.puntuacion = rangePuntuacion(puntuacion);
+        fechaValoracion = LocalDateTime.now().withNano(0);
 
     }
     //Getters
@@ -35,13 +46,15 @@ public class Valoracion {
     public int getPuntuacion() {
         return puntuacion;
     }
-    public String getFechaValoracion() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        return fechaValoracion.format(formatter);
+    public Timestamp getFechaValoracion() {
+        return Timestamp.valueOf(fechaValoracion);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-     private int rangePuntuacion(int puntuacion) {
+    private int rangePuntuacion(int puntuacion) {
         if (puntuacion >=maxPuntuacion){
             return maxPuntuacion;
         } else if (puntuacion<=minPuntuacion) {

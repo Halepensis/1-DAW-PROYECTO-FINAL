@@ -1,9 +1,6 @@
 import src.BDD.VisitantesDAO;
 import src.Classes.*;
 import src.FileManager.ExposicionesBinario;
-import src.FileManager.GestorValoraciones;
-import src.FileManager.LogsTexto;
-
 import java.io.IOException;
 
 public class Main {

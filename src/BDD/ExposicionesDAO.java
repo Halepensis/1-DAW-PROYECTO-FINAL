@@ -21,12 +21,14 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             sentencia.setString(3, exposicion.getDescripcion());
             sentencia.setTimestamp(4, exposicion.getFechaCreacion());
             sentencia.executeUpdate();
-            sentencia.close();
             ResultSet rs = sentencia.getGeneratedKeys();
             if (rs.next()){
                 int idGenearado = rs.getInt("id");
                 exposicion.setId(idGenearado);
             }
+            rs.close();
+            sentencia.close();
+            con.close();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -34,7 +36,7 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
 
     }
-
+    //TODO Ver como manejar lo que devuleve si una Exposicion entera o no
     @Override
     public Exposicion get(int id) {
         String sql = "Select From Exposiciones where id=?";
@@ -50,11 +52,20 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
                 String descripcion = rs.getString("descripcion");
                 Timestamp timestamp = rs.getTimestamp("fechaCreacion");
                 LocalDateTime fechaCreacion = timestamp.toLocalDateTime();
+
                 return new Exposicion(idBD,titulo, descripcion, tipo, fechaCreacion);
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }
+        finally {
+            try {
+                sentencia.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());;
+            }
         }
 
         return null;
@@ -78,21 +89,87 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
                         id,titulo, tipo, descripcion, fechaCreacion);
 
             }
+            rs.close();
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        } finally {
+            try {
+                sentencia.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());;
+            }
         }
 
     }
     @Override
-    public void update(Exposicion objeto) {
+    public void update(Exposicion exposicion) {
+        String sql = "UPDATE Exposiciones SET titulo=? tipo=? descripcion=?";
+        con = conectar();
+        try{
+            sentencia = con.prepareStatement(sql);
+            sentencia.setString(1,exposicion.getTitulo());
+            sentencia.setString(2,exposicion.getTipo().name());
+            sentencia.setString(3,exposicion.getDescripcion());
+            sentencia.executeUpdate();
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                sentencia.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());;
+            }
+        }
 
     }
 
     @Override
-    public void delete(Exposicion objeto) {
+    public void delete(Exposicion exposicion) {
+        String sql = "DELETE FROM Exposicion where id=?";
+        con = conectar();
+        try{
+            sentencia = con.prepareStatement(sql);
+            sentencia.setInt(1,exposicion.getId());
+            sentencia.executeUpdate();
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }finally {
+            try {
+                sentencia.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
 
     }
+    public void delete(int id) {
+        String sql = "DELETE FROM Exposicion where id=?";
+        con = conectar();
+        try{
+            sentencia = con.prepareStatement(sql);
+            sentencia.setInt(1,id);
+            sentencia.executeUpdate();
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }finally {
+            try {
+                sentencia.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+
+        }
+
+    }
+
 
 }
 
