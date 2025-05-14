@@ -17,6 +17,7 @@ public class Valoracion {
     private int puntuacion;
     private LocalDateTime fechaValoracion;
 
+    //Al crearlo
     public Valoracion(Visitante visitante, Exposicion exposicion,String comentario, int puntuacion){
         this.visitante = visitante;
         this.exposicion = exposicion;
@@ -25,12 +26,14 @@ public class Valoracion {
         fechaValoracion = LocalDateTime.now().withNano(0);
 
     }
-    public Valoracion(int id,Visitante visitante, Exposicion exposicion,String comentario, int puntuacion){
+    //Cuando se recupera de la BD
+    public Valoracion(int id,Visitante visitante, Exposicion exposicion,String comentario, int puntuacion,LocalDateTime fechaValoracion){
+        this.id = id;
         this.visitante = visitante;
         this.exposicion = exposicion;
         this.comentario = comentario;
         this.puntuacion = rangePuntuacion(puntuacion);
-        fechaValoracion = LocalDateTime.now().withNano(0);
+        this.fechaValoracion = fechaValoracion;
 
     }
     //Getters

@@ -1,13 +1,13 @@
 package src.BDD;
-
 import src.Classes.Exposicion;
-import src.Classes.TipoExposicion;
 import src.Classes.Valoracion;
+import src.Classes.Visitante;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class ValoracionDAO extends MuseoConnection implements BdInterface<Valoracion> {
 
@@ -61,8 +61,9 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
                 String comentario = rs.getString("comentario");
                 Timestamp timestamp = rs.getTimestamp("fechaValoracion");
                 LocalDateTime fechaValoracion = timestamp.toLocalDateTime();
-
-                return new Valoracion(idBD,);
+                Visitante visitante = new VisitantesDAO().get(idVisitante);
+                Exposicion exposicion = new ExposicionesDAO().get(idExposicon);
+                return new Valoracion(idBD,visitante,exposicion,comentario,nota,fechaValoracion);
             }
 
         } catch (SQLException e) {
@@ -81,9 +82,32 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
     }
 
     @Override
-    public void readAll() {
+    public ArrayList<Valoracion> getAll() {
+        String sql = "Select * FROM Valoraciones";
+        ArrayList<Valoracion> lista = new ArrayList<>();
+        try {
+            con = conectar();
+            sentencia = con.prepareStatement(sql);
+            ResultSet rs = sentencia.executeQuery();
+            while (rs.next()) {
+                Valoracion visitante = this.get(rs.getInt("id"));
+                lista.add(visitante);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
 
+        }finally {
+            try{
+                sentencia.close();
+                con.close();
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return lista;
     }
+
 
     @Override
     public void update(Valoracion objeto) {

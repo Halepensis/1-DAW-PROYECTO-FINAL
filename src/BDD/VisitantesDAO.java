@@ -3,8 +3,10 @@ package src.BDD;
 import src.Classes.Visitante;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class VisitantesDAO extends MuseoConnection implements BdInterface<Visitante> {
+
     @Override
     public void create(Visitante visitante) {
         String sql = "INSERT INTO Visitantes (nombre,edad,email)" +
@@ -68,25 +70,32 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
     }
 
     @Override
-    public void readAll() {
+    public ArrayList<Visitante> getAll() {
         String sql = "Select * FROM Visitantes";
+        ArrayList<Visitante> lista = new ArrayList<>();
         try {
             con = conectar();
             sentencia = con.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
-                System.out.println(
-                        rs.getString("nombre") + " "
-                                + rs.getString("email") + " "
-                                + rs.getInt("edad"));
+                Visitante visitante = this.get(rs.getInt("id"));
+                lista.add(visitante);
             }
-            sentencia.close();
+            rs.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ;
+        }finally {
+            try{
+                sentencia.close();
+                con.close();
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
         }
-
+        return lista;
     }
+
+
     @Override
     public void update(Visitante visitante) {
         String sql = "UPDATE Visitantes SET nombre=? edad=? email=? WHERE id=?";
