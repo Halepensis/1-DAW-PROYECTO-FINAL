@@ -15,6 +15,7 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
     public void create(Valoracion valoracion) {
         String sql = "INSERT INTO Valoraciones (visitanteId,exposicionId,nota,comentario,fechaValoracion)" +
                 " VALUES (?,?,?,?,?)";
+
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
