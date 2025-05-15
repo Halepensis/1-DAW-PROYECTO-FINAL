@@ -2,11 +2,8 @@ package src.BDD;
 
 import src.Classes.Exposicion;
 import src.Classes.TipoExposicion;
-import src.Classes.Visitante;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -14,39 +11,57 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
     @Override
     public void create(Exposicion exposicion) {
-        String sql = "Insert into Exposiciones (titulo,tipo,descripcion,fechaCreacion) (?,?,?,?)";
+        String sql = "Insert into Exposiciones (titulo,tipo,descripcion,fechaCreacion) VALUES (?,?,?,?)";
+        String sqlSelect = "SELECT id FROM Exposiciones WHERE titulo = ?";
         con = conectar();
         try {
-            sentencia = con.prepareStatement(sql);
+            //Miramos si tiene el mismo titulo, en caso de tenerlo asignamos id y salimos
+            sentencia = con.prepareStatement(sqlSelect);
+            sentencia.setString(1,exposicion.getTitulo());
+            ResultSet rs = sentencia.executeQuery();
+            if (rs.next()) {
+                exposicion.setId(rs.getInt("id"));
+                System.out.println("La exposicion ya existe");
+                rs.close();
+                return;
+            }
+            //En caso de no estar repetido lo introducimos en la tabla
+            sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, exposicion.getTitulo());
             sentencia.setString(2, exposicion.getTipo().name());
             sentencia.setString(3, exposicion.getDescripcion());
             sentencia.setTimestamp(4, exposicion.getFechaCreacion());
             sentencia.executeUpdate();
-            ResultSet rs = sentencia.getGeneratedKeys();
+            rs = sentencia.getGeneratedKeys();
             if (rs.next()) {
-                int idGenearado = rs.getInt("id");
+                int idGenearado = rs.getInt(1);
                 exposicion.setId(idGenearado);
             }
             rs.close();
-            sentencia.close();
-            con.close();
-
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }finally {
+            try{
+                if(sentencia!=null)sentencia.close();
+               if(con!=null) con.close();
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
         }
 
 
     }
 
+
     @Override
     public Exposicion get(int id) {
-        String sql = "Select From Exposiciones where id=?";
+        String sql = "Select * From Exposiciones where id=?";
         con = conectar();
+        ResultSet rs=null;
         try {
             sentencia = con.prepareStatement(sql);
             sentencia.setInt(1, id);
-            ResultSet rs = sentencia.executeQuery();
+            rs = sentencia.executeQuery();
             if (rs.next()) {
                 int idBD = rs.getInt("id");
                 String titulo = rs.getString("titulo");
@@ -54,7 +69,6 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
                 String descripcion = rs.getString("descripcion");
                 Timestamp timestamp = rs.getTimestamp("fechaCreacion");
                 LocalDateTime fechaCreacion = timestamp.toLocalDateTime();
-
                 return new Exposicion(idBD, titulo, descripcion, tipo, fechaCreacion);
             }
 
@@ -62,8 +76,9 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             System.out.println(e.getMessage());
         } finally {
             try {
-                sentencia.close();
-                con.close();
+                if(rs!=null) rs.close();
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
                 ;
@@ -90,8 +105,8 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             System.out.println(e.getMessage());
         } finally {
             try {
-                sentencia.close();
-                con.close();
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
@@ -113,8 +128,8 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             System.out.println(e.getMessage());
         } finally {
             try {
-                sentencia.close();
-                con.close();
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
                 ;
@@ -125,7 +140,7 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
     @Override
     public void delete(Exposicion exposicion) {
-        String sql = "DELETE FROM Exposicion where id=?";
+        String sql = "DELETE FROM Exposiciones where id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
@@ -136,8 +151,8 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             System.out.println(e.getMessage());
         } finally {
             try {
-                sentencia.close();
-                con.close();
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
