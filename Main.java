@@ -1,20 +1,25 @@
-import src.BDD.VisitantesDAO;
+import src.BDD.ExposicionesDAO;
+
 import src.Classes.*;
-import src.FileManager.ExposicionesBinario;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Exposicion ejemplo = new Exposicion("Ejemplo","La que sea", TipoExposicion.Tecnologia);
-        Exposicion ejemplo2 = new Exposicion("Ejemplo2","La que sea", TipoExposicion.Tecnologia);
-        Visitante visitante = new Visitante("Pedro","ejemplo@gmail.com",55);
-        Visitante visitante2 = new Visitante("Carlos","ejemplo@gmail.com",55);
-        Valoracion valoracion = new Valoracion(visitante,ejemplo,"no esta mal",4);
-        Valoracion valoracion3 = new Valoracion(visitante,ejemplo2,"esta bien",4);
-        Valoracion valoracion2 = new Valoracion(visitante2,ejemplo,"meh",4);
-        ExposicionesBinario binario = new ExposicionesBinario();
-        VisitantesDAO dao = new VisitantesDAO();
-        dao.create(visitante);
+        ExposicionesDAO exposicionesDAO = new ExposicionesDAO();
+        ArrayList<Exposicion> listaExposiciones = exposicionesDAO.getAll();
+        for (Exposicion exposicion : listaExposiciones){
+            System.out.println(exposicion);
+        }
+        Exposicion prueba =  new Exposicion("Prueba","una prueba a ver que sale",TipoExposicion.Tecnologia);
+        exposicionesDAO.create(prueba);
+
+        listaExposiciones = exposicionesDAO.getAll();
+        for (Exposicion exposicion : listaExposiciones){
+            System.out.println(exposicion);
+        }
+        System.out.println(prueba.getId());
 
 
 
