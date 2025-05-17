@@ -11,8 +11,20 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
     public void create(Visitante visitante) {
         String sql = "INSERT INTO Visitantes (nombre,edad,email)" +
                 "VALUES (?,?,?)";
+        String sqlSelect = "SELECT id FROM Visitantes WHERE email = ?";
+        con = conectar();
         try {
-            con = conectar();
+            //Miramos si tiene el mismo email, en caso de tenerlo asignamos id y salimos
+            sentencia = con.prepareStatement(sqlSelect);
+            sentencia.setString(1,visitante.getEmail());
+            ResultSet rs = sentencia.executeQuery();
+            if (rs.next()) {
+                visitante.setId(rs.getInt("id"));
+                System.out.println("El visitante ya existe");
+                rs.close();
+                return;
+            }
+            //En caso de no estar repetido lo introducimos en la tabla
             sentencia = con.prepareStatement(sql);
             sentencia.setString(1, visitante.getNombre());
             sentencia.setInt(2, visitante.getEdad());
@@ -21,7 +33,14 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
             sentencia.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            ;
+
+        }finally {
+            try{
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
+            }catch (SQLException e){
+                System.out.println(e.getMessage());
+            }
         }
 
     }

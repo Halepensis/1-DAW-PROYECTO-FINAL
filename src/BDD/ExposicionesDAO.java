@@ -116,13 +116,14 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
     @Override
     public void update(Exposicion exposicion) {
-        String sql = "UPDATE Exposiciones SET titulo=? tipo=? descripcion=?";
+        String sql = "UPDATE Exposiciones SET titulo=? tipo=? descripcion=? WHERE id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
             sentencia.setString(1, exposicion.getTitulo());
             sentencia.setString(2, exposicion.getTipo().name());
             sentencia.setString(3, exposicion.getDescripcion());
+            sentencia.setInt(4,exposicion.getId());
             sentencia.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -132,7 +133,6 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
                 if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
-                ;
             }
         }
 
@@ -173,8 +173,8 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             System.out.println(e.getMessage());
         } finally {
             try {
-                sentencia.close();
-                con.close();
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
             } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }

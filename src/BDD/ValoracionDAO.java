@@ -99,24 +99,57 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
             System.out.println(e.getMessage());
 
         }finally {
-            try{
-                sentencia.close();
-                con.close();
-            }catch (SQLException e){
+            try {
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
+            } catch (SQLException e) {
                 System.out.println(e.getMessage());
             }
+
         }
         return lista;
     }
 
 
     @Override
-    public void update(Valoracion objeto) {
-
+    public void update(Valoracion valoracion) {
+        String sql = "UPDATE Valoraciones SET nota=? comentario=? where id=?";
+        con = conectar();
+        try {
+            sentencia = con.prepareStatement(sql);
+            sentencia.setInt(1, valoracion.getPuntuacion());
+            sentencia.setString(2, valoracion.getComentario());
+            sentencia.setInt(3, valoracion.getId());
+            sentencia.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     @Override
-    public void delete(Valoracion objeto) {
-
+    public void delete(Valoracion valoracion) {
+        String sql = "Delete from Valoraciones  where id=?";
+        con = conectar();
+        try {
+            sentencia = con.prepareStatement(sql);
+            sentencia.setInt(1, valoracion.getId());
+            sentencia.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if(sentencia!=null)sentencia.close();
+                if(con!=null) con.close();
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 }

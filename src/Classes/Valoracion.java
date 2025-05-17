@@ -37,6 +37,11 @@ public class Valoracion {
 
     }
     //Getters
+
+    public int getId() {
+        return id;
+    }
+
     public Visitante getVisitante() {
         return visitante;
     }
