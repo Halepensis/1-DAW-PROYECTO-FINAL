@@ -92,26 +92,26 @@ public class Main {
     private static void addVisitante() {
         System.out.println("\n=== AÑADIR VISITANTE ===");
         System.out.print("Nombre: ");
-        String nombre = scanner.nextLine();
+        String nombre = scanner.nextLine().trim();
         System.out.print("Email: ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
         System.out.print("Edad: ");
         try {
             int edad = Integer.parseInt(scanner.nextLine());
             Visitante visitante = new Visitante(nombre, email, edad);
             visitantesDAO.create(visitante);
-            System.out.println("Visitante añadido correctamente.");
         } catch (NumberFormatException e) {
             System.out.println("Error: La edad debe ser un número entero.");
         }
+
     }
 
     private static void addExposicion() {
         System.out.println("\n=== AÑADIR EXPOSICIÓN ===");
         System.out.print("Título: ");
-        String titulo = scanner.nextLine();
+        String titulo = scanner.nextLine().trim();
         System.out.print("Descripción: ");
-        String descripcion = scanner.nextLine();
+        String descripcion = scanner.nextLine().trim();
         System.out.println("Tipos disponibles: ");
 
         TipoExposicion[] tipos = TipoExposicion.values();
