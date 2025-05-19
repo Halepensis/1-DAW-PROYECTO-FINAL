@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class ExposicionesBinario {
+    // LinkedHashSet mantiene el orden de inserción y garantiza unicidad
+    // pero solo guarda los títulos, no los objetos Exposicion completos
      LinkedHashSet<String> listaExposiciones = new LinkedHashSet<>();
 
+     // Leemos los datos que haya antes en el binario
     public ExposicionesBinario(){
         ArrayList<String> listaExposicion = leerExposicionesBinario();
         if (!listaExposicion.isEmpty()){
