@@ -25,12 +25,13 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
                 return;
             }
             //En caso de no estar repetido lo introducimos en la tabla
-            sentencia = con.prepareStatement(sql);
+            sentencia = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, visitante.getNombre());
             sentencia.setInt(2, visitante.getEdad());
             sentencia.setString(3, visitante.getEmail());
             sentencia.executeUpdate();
             sentencia.close();
+            System.out.println("Visitante añadido correctamente.");
         } catch (Exception e) {
             System.out.println(e.getMessage());
 
@@ -117,7 +118,7 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
 
     @Override
     public void update(Visitante visitante) {
-        String sql = "UPDATE Visitantes SET nombre=? edad=? email=? WHERE id=?";
+        String sql = "UPDATE Visitantes SET nombre=?, edad=?, email=?, WHERE id=?";
         try {
             sentencia = con.prepareStatement(sql);
             sentencia.setString(1,visitante.getNombre());
