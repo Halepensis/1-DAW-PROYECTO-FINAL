@@ -58,6 +58,16 @@ public class Valoracion {
         return Timestamp.valueOf(fechaValoracion);
     }
 
+    //Setters
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -87,12 +97,14 @@ public class Valoracion {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Valoracion that = (Valoracion) o;
+        // La igualdad se define por visitante y exposición,
+        // lo que significa que un visitante solo puede valorar una exposición una vez
         return Objects.equals(visitante, that.visitante) && Objects.equals(exposicion,that.exposicion);
 
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(visitante);
+        return Objects.hash(visitante,exposicion);
     }
 }
