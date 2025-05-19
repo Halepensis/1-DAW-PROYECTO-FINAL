@@ -6,7 +6,10 @@ import src.Classes.TipoExposicion;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
+/**
+ * Implementación del DAO para la entidad Exposicion
+ * Gestiona la persistencia en base de datos de las exposiciones
+ */
 public class ExposicionesDAO extends MuseoConnection implements BdInterface<Exposicion> {
 
     @Override
@@ -15,17 +18,20 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
         String sqlSelect = "SELECT id FROM Exposiciones WHERE titulo = ?";
         con = conectar();
         try {
-            //Miramos si tiene el mismo titulo, en caso de tenerlo asignamos id y salimos
+            // Primero verificamos si ya existe una exposición con el mismo título
+            // para evitar duplicados en la base de datos
             sentencia = con.prepareStatement(sqlSelect);
             sentencia.setString(1,exposicion.getTitulo());
             ResultSet rs = sentencia.executeQuery();
             if (rs.next()) {
+                // Si ya existe, simplemente asignamos el ID existente al objeto
                 exposicion.setId(rs.getInt("id"));
                 System.out.println("La exposicion ya existe");
                 rs.close();
                 return;
             }
             //En caso de no estar repetido lo introducimos en la tabla
+            // RETURN_GENERATED_KEYS es necesario para obtener el ID autogenerado
             sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             sentencia.setString(1, exposicion.getTitulo());
             sentencia.setString(2, exposicion.getTipo().name());
@@ -97,8 +103,8 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
             sentencia = con.prepareStatement(sql);
             ResultSet rs = sentencia.executeQuery();
             while (rs.next()) {
-                Exposicion visitante = this.get(rs.getInt("id"));
-                lista.add(visitante);
+                Exposicion exposicion = this.get(rs.getInt("id"));
+                lista.add(exposicion);
             }
             rs.close();
         } catch (Exception e) {
@@ -116,7 +122,7 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
     @Override
     public void update(Exposicion exposicion) {
-        String sql = "UPDATE Exposiciones SET titulo=? tipo=? descripcion=? WHERE id=?";
+        String sql = "UPDATE Exposiciones SET titulo=?, tipo=?, descripcion=?, WHERE id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
@@ -162,7 +168,7 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
     }
 
     public void delete(int id) {
-        String sql = "DELETE FROM Exposicion where id=?";
+        String sql = "DELETE FROM Exposiciones where id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
