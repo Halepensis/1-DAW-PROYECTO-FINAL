@@ -2,7 +2,7 @@ package src.BDD;
 
 import java.sql.*;
 
-abstract public class MuseoConnection {
+abstract public class MuseoConnection  {
     protected PreparedStatement sentencia;
     private  final String url = "jdbc:mysql://localhost:3306/MUSEO";
     private  final String user = "root";
