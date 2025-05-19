@@ -5,6 +5,7 @@ import src.Classes.Visitante;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
 
         con = conectar();
         try {
-            sentencia = con.prepareStatement(sql);
+            sentencia = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             sentencia.setInt(1,valoracion.getVisitante().getId());
             sentencia.setInt(2,valoracion.getExposicion().getId());
             sentencia.setInt(3,valoracion.getPuntuacion());
@@ -27,7 +28,7 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
             sentencia.executeUpdate();
             ResultSet rs = sentencia.getGeneratedKeys();
             if (rs.next()){
-                int idGenerado = rs.getInt("id");
+                int idGenerado = rs.getInt(1);
                 valoracion.setId(idGenerado);
             }
             rs.close();
@@ -48,7 +49,7 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
 
     @Override
     public Valoracion get(int id) {
-        String sql = "Select From Valoraciones where id=?";
+        String sql = "Select * From Valoraciones where id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
@@ -113,7 +114,9 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
 
     @Override
     public void update(Valoracion valoracion) {
-        String sql = "UPDATE Valoraciones SET nota=? comentario=? where id=?";
+        // Aquí sólo se actualizan los campos nota y comentario
+        // No se actualizan las relaciones con visitante o exposición
+        String sql = "UPDATE Valoraciones SET nota=?, comentario=?, where id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
