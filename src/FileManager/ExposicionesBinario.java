@@ -8,55 +8,49 @@ import java.util.LinkedHashSet;
 
 public class ExposicionesBinario {
     // LinkedHashSet mantiene el orden de inserción y garantiza unicidad
-    // pero solo guarda los títulos, no los objetos Exposicion completos
-     private LinkedHashSet<String> listaExposiciones = new LinkedHashSet<>();
+     private LinkedHashSet<Exposicion> listaExposiciones = new LinkedHashSet<>();
 
      // Leemos los datos que haya antes en el binario
     public ExposicionesBinario(){
-        ArrayList<String> listaExposicion = leerExposicionesBinario();
+        LinkedHashSet<Exposicion> listaExposicion = leerExposicionesBinario();
         if (!listaExposicion.isEmpty()){
-            for (String exposicion:listaExposicion){
-                listaExposiciones.add(exposicion);
-            }
+           listaExposiciones.addAll(listaExposicion);
         }
     }
 
     public  void addExposicion(Exposicion exposicion){
-        String linea = exposicion.getTitulo();
-        if (!listaExposiciones.contains(linea)){
-            listaExposiciones.add(linea);
-            addExposicionesBinario(linea);
+        if (!listaExposiciones.contains(exposicion)){
+            listaExposiciones.add(exposicion);
+            guardarTodasLasExposiciones();
+
         }
 
     }
     public void showExposiciones(){
-        for (String exposicion:listaExposiciones){
-            System.out.println(exposicion);
+        for (Exposicion exposicion : listaExposiciones) {
+            System.out.println(exposicion.toString()); //
         }
     }
 
-    private  void addExposicionesBinario(String linea){
-        try (DataOutputStream dos = new DataOutputStream(new FileOutputStream("exposiciones.dat", true))) {
-            dos.writeUTF(linea);  // Escribe la cadena en binario (con longitud incluida)
+    private void guardarTodasLasExposiciones() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("exposiciones.dat"))) {
+            oos.writeObject(listaExposiciones);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error al guardar las exposiciones: " + e.getMessage());
         }
     }
-    private  ArrayList<String> leerExposicionesBinario(){
-        ArrayList<String> exposicionesLeidas = new ArrayList<>();
+
+    private  LinkedHashSet<Exposicion> leerExposicionesBinario(){
         File archivo = new File("exposiciones.dat");
         if (!archivo.exists()){
-            return exposicionesLeidas;
+            return new LinkedHashSet<>();
         }
-        try (DataInputStream dis = new DataInputStream(new FileInputStream("exposiciones.dat"))) {
-            while (dis.available() > 0) {
-                String lineaLeida = dis.readUTF();
-                exposicionesLeidas.add(lineaLeida);
-            }
-        } catch (IOException e) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("exposiciones.dat"))) {
+            return (LinkedHashSet<Exposicion>) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return exposicionesLeidas;
+        return new LinkedHashSet<>();
     }
 }
 

@@ -122,7 +122,7 @@ public class ExposicionesDAO extends MuseoConnection implements BdInterface<Expo
 
     @Override
     public void update(Exposicion exposicion) {
-        String sql = "UPDATE Exposiciones SET titulo=?, tipo=?, descripcion=?, WHERE id=?";
+        String sql = "UPDATE Exposiciones SET titulo=?, tipo=?, descripcion=? WHERE id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);

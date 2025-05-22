@@ -61,7 +61,8 @@ public class Visitante {
 
     @Override
     public String toString() {
-        return "nombre:'" + nombre + '\'' +
+        return "id:'" + id + '\'' +
+                "nombre:'" + nombre + '\'' +
                 ", email:'" + email + '\'' +
                 ", edad:" + edad;
     }

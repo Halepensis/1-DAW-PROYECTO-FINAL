@@ -55,6 +55,17 @@ public class Exposicion {
         this.id = id;
     }
 
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setTipo(TipoExposicion tipo) {
+        this.tipo = tipo;
+    }
 
     public String getFechaCreacionFormated() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -64,7 +75,8 @@ public class Exposicion {
 
     @Override
     public String toString() {
-        return "titulo='" + titulo + '\'' +
+        return "id='" + id + '\'' +
+                "titulo='" + titulo + '\'' +
                 ", descripcion:'" + descripcion + '\'' +
                 ", tipo:" + tipo +
                 ", fechaCreacion:" + fechaCreacion;

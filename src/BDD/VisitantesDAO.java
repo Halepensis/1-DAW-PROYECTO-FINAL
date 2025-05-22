@@ -118,7 +118,7 @@ public class VisitantesDAO extends MuseoConnection implements BdInterface<Visita
 
     @Override
     public void update(Visitante visitante) {
-        String sql = "UPDATE Visitantes SET nombre=?, edad=?, email=?, WHERE id=?";
+        String sql = "UPDATE Visitantes SET nombre=?, edad=?, email=? WHERE id=?";
         try {
             sentencia = con.prepareStatement(sql);
             sentencia.setString(1,visitante.getNombre());

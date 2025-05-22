@@ -116,7 +116,7 @@ public class ValoracionDAO extends MuseoConnection implements BdInterface<Valora
     public void update(Valoracion valoracion) {
         // Aquí sólo se actualizan los campos nota y comentario
         // No se actualizan las relaciones con visitante o exposición
-        String sql = "UPDATE Valoraciones SET nota=?, comentario=?, where id=?";
+        String sql = "UPDATE Valoraciones SET nota=?, comentario=? where id=?";
         con = conectar();
         try {
             sentencia = con.prepareStatement(sql);
